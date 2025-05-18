@@ -85,7 +85,7 @@
     /* Book-themed decorative elements */
     .book-decoration {
       position: absolute;
-      opacity: 0.05;
+      opacity: 0.08;
       z-index: 0;
       pointer-events: none;
     }
@@ -110,6 +110,20 @@
       left: 10%;
       transform: rotate(5deg);
     }
+    
+    .book-icon-4 {
+      font-size: 9rem;
+      top: 50%;
+      right: 12%;
+      transform: rotate(-8deg);
+    }
+    
+    .book-icon-5 {
+      font-size: 7rem;
+      top: 30%;
+      left: 25%;
+      transform: rotate(12deg);
+    }
 
     .book-stack {
       position: absolute;
@@ -119,6 +133,7 @@
       background: linear-gradient(135deg, var(--raw-umber) 0%, var(--seal-brown) 100%);
       box-shadow: 0 8px 16px rgba(0,0,0,0.2);
       animation: float 12s ease-in-out infinite;
+      opacity: 0.12;
     }
 
     .book-stack::before, .book-stack::after {
@@ -155,6 +170,15 @@
       bottom: 10%;
       left: 15%;
       animation-delay: 2s;
+    }
+
+    .stack-3 {
+      top: 60%;
+      right: 25%;
+      transform: rotate(12deg);
+      animation-delay: 3.5s;
+      width: 160px;
+      height: 220px;
     }
 
     /* Header Styles */
@@ -502,8 +526,11 @@
   <div class="book-decoration book-icon-1">📚</div>
   <div class="book-decoration book-icon-2">📖</div>
   <div class="book-decoration book-icon-3">📕</div>
+  <div class="book-decoration book-icon-4">📙</div>
+  <div class="book-decoration book-icon-5">📘</div>
   <div class="book-stack stack-1"></div>
   <div class="book-stack stack-2"></div>
+  <div class="book-stack stack-3"></div>
   
   <header>
     <button id="theme-toggle" aria-pressed="false" title="Toggle dark/light theme">🌗</button>

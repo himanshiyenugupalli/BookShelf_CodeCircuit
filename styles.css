@@ -45,7 +45,7 @@ body {
 /* Book-themed decorative elements */
 .book-decoration {
   position: fixed;
-  opacity: 0.03;
+  opacity: 0.08;
   z-index: -1;
   pointer-events: none;
 }
@@ -64,6 +64,27 @@ body {
   transform: rotate(8deg);
 }
 
+.book-icon-3 {
+  font-size: 14rem;
+  top: 40%;
+  right: 12%;
+  transform: rotate(-5deg);
+}
+
+.book-icon-4 {
+  font-size: 10rem;
+  bottom: 30%;
+  left: 15%;
+  transform: rotate(12deg);
+}
+
+.book-icon-5 {
+  font-size: 8rem;
+  top: 25%;
+  left: 40%;
+  transform: rotate(-8deg);
+}
+
 .book-stack {
   position: fixed;
   width: 160px;
@@ -72,7 +93,7 @@ body {
   background: linear-gradient(135deg, var(--raw-umber) 0%, var(--seal-brown) 100%);
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
   z-index: -1;
-  opacity: 0.05;
+  opacity: 0.1;
   pointer-events: none;
 }
 
@@ -107,6 +128,14 @@ body {
   bottom: 15%;
   left: 5%;
   transform: rotate(-5deg);
+}
+
+.stack-3 {
+  top: 70%;
+  right: 20%;
+  transform: rotate(8deg);
+  width: 140px;
+  height: 180px;
 }
 
 body.dark {
