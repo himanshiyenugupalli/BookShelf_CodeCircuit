@@ -1,77 +1,663 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>BookShelf</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookShelf - Your Digital Reading Companion</title>
+  <style>
+    /* Reset & Base Styles */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    :root {
+      /* Brown color palette */
+      --seal-brown: #582f0e;
+      --russet: #7f4f24;
+      --raw-umber: #936639;
+      --lion: #a68a64;
+      --khaki: #b6ad90;
+      --sage: #c2c5aa;
+      --sage-alt: #a4ac86;
+      --reseda-green: #656d4a;
+      --ebony: #414833;
+      --black-olive: #333d29;
+      
+      --primary: var(--raw-umber);
+      --primary-light: var(--lion);
+      --primary-dark: var(--seal-brown);
+      --accent: var(--reseda-green);
+      --accent-light: var(--sage-alt);
+      --accent-dark: var(--ebony);
+      --bg-light: #f5f7fa;
+      --text-dark: var(--black-olive);
+      --text-light: var(--russet);
+      --white: #fff;
+      --card-shadow: 0 8px 30px rgba(88, 47, 14, 0.12);
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background-color 0.4s, color 0.4s;
+    }
+
+    /* Dark mode styles */
+    body.dark {
+      background-color: #121212;
+      color: var(--khaki);
+    }
+
+    body.dark .section-title {
+      color: var(--lion);
+    }
+
+    body.dark .feature-card {
+      background-color: #2a2a2a;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    }
+
+    body.dark .feature-title {
+      color: var(--lion);
+    }
+
+    body.dark .feature-description {
+      color: var(--khaki);
+    }
+
+    body.dark .how-it-works {
+      background-color: #1a1a1a;
+    }
+
+    body.dark .step-title {
+      color: var(--lion);
+    }
+
+    body.dark .step-description {
+      color: var(--khaki);
+    }
+
+    /* Book-themed decorative elements */
+    .book-decoration {
+      position: absolute;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .book-icon-1 {
+      font-size: 12rem;
+      top: 12%;
+      left: 5%;
+      transform: rotate(-15deg);
+    }
+
+    .book-icon-2 {
+      font-size: 8rem;
+      bottom: 15%;
+      right: 8%;
+      transform: rotate(10deg);
+    }
+
+    .book-icon-3 {
+      font-size: 10rem;
+      bottom: 25%;
+      left: 10%;
+      transform: rotate(5deg);
+    }
+
+    .book-stack {
+      position: absolute;
+      width: 180px;
+      height: 240px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--raw-umber) 0%, var(--seal-brown) 100%);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      animation: float 12s ease-in-out infinite;
+    }
+
+    .book-stack::before, .book-stack::after {
+      content: '';
+      position: absolute;
+      border-radius: 6px;
+    }
+
+    .book-stack::before {
+      top: -15px;
+      left: 15px;
+      width: 160px;
+      height: 30px;
+      background: linear-gradient(135deg, var(--lion) 0%, var(--khaki) 100%);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .book-stack::after {
+      top: -30px;
+      left: 30px;
+      width: 140px;
+      height: 25px;
+      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-alt) 100%);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .stack-1 {
+      top: 15%;
+      right: 15%;
+      animation-delay: 1s;
+    }
+
+    .stack-2 {
+      bottom: 10%;
+      left: 15%;
+      animation-delay: 2s;
+    }
+
+    /* Header Styles */
+    header {
+      background: linear-gradient(135deg, var(--seal-brown) 0%, var(--russet) 100%);
+      color: var(--white);
+      padding: 2rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* Theme toggle */
+    #theme-toggle {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+    }
+    #theme-toggle:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Animated background shapes */
+    .shape {
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      z-index: 1;
+    }
+    
+    .shape-1 {
+      width: 300px;
+      height: 300px;
+      top: -150px;
+      left: -100px;
+      animation: float 8s ease-in-out infinite;
+    }
+    
+    .shape-2 {
+      width: 200px;
+      height: 200px;
+      bottom: -100px;
+      right: 10%;
+      animation: float 12s ease-in-out infinite 1s;
+    }
+    
+    .shape-3 {
+      width: 150px;
+      height: 150px;
+      top: 10%;
+      right: -50px;
+      animation: float 10s ease-in-out infinite 2s;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-20px) scale(1.05); }
+    }
+    
+    .app-name {
+      font-size: 4rem;
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s ease-out forwards;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .tagline {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s ease-out 0.3s forwards;
+      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .cta-button {
+      display: inline-block;
+      background-color: var(--white);
+      color: var(--seal-brown);
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: 1rem 2rem;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(88, 47, 14, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      opacity: 0;
+      animation: fadeIn 1s ease-out 0.6s forwards;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(88, 47, 14, 0.25);
+      background-color: #f0f0f0;
+    }
+    
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+    
+    /* Features Section */
+    .features {
+      max-width: 1200px;
+      margin: 5rem auto;
+      padding: 0 1.5rem;
+    }
+    
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      position: relative;
+      color: var(--seal-brown);
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background-color: var(--raw-umber);
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+    }
+    
+    .feature-card {
+      background-color: var(--white);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.3s;
+      opacity: 0;
+      transform: translateY(30px);
+      position: relative;
+    }
+    
+    .feature-card.animate {
+      animation: featureCardAppear 0.8s ease-out forwards;
+    }
+    
+    @keyframes featureCardAppear {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--raw-umber);
+      margin-bottom: 1rem;
+    }
+    
+    .feature-title {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: var(--seal-brown);
+    }
+    
+    .feature-description {
+      color: var(--text-light);
+    }
+    
+    /* How It Works Section */
+    .how-it-works {
+      background-color: var(--white);
+      padding: 5rem 0;
+    }
+    
+    .steps-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      padding: 0 1.5rem;
+    }
+    
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      opacity: 0;
+    }
+    
+    .step.animate {
+      animation: stepAppear 0.8s ease-out forwards;
+    }
+    
+    @keyframes stepAppear {
+      to {
+        opacity: 1;
+      }
+    }
+    
+    .step:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+    
+    .step-number {
+      font-size: 5rem;
+      font-weight: 700;
+      color: var(--raw-umber);
+      opacity: 0.3;
+    }
+    
+    .step-content {
+      flex: 1;
+    }
+    
+    .step-title {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      color: var(--seal-brown);
+    }
+    
+    .step-description {
+      color: var(--text-light);
+    }
+    
+    /* Footer */
+    footer {
+      background-color: var(--seal-brown);
+      color: var(--white);
+      padding: 3rem 0;
+      text-align: center;
+    }
+    
+    .footer-content {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    
+    .footer-logo {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    
+    .footer-link {
+      color: var(--white);
+      text-decoration: none;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    
+    .footer-link:hover {
+      opacity: 1;
+    }
+    
+    .copyright {
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .app-name {
+        font-size: 3rem;
+      }
+      
+      .tagline {
+        font-size: 1.2rem;
+      }
+      
+      .step, .step:nth-child(even) {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+      }
+      
+      .book {
+        opacity: 0.1;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .app-name {
+        font-size: 2.5rem;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="container" role="main">
-    <h1>BookShelf</h1>
-
-    <div class="header-bar" aria-label="Main controls">
-      <input type="search" id="search" placeholder="Search by title or author..." aria-label="Search books" />
-      <button id="theme-toggle" aria-pressed="false" title="Toggle dark/light theme">🌗</button>
+  <!-- Book-themed decorative elements -->
+  <div class="book-decoration book-icon-1">📚</div>
+  <div class="book-decoration book-icon-2">📖</div>
+  <div class="book-decoration book-icon-3">📕</div>
+  <div class="book-stack stack-1"></div>
+  <div class="book-stack stack-2"></div>
+  
+  <header>
+    <button id="theme-toggle" aria-pressed="false" title="Toggle dark/light theme">🌗</button>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    
+    <div class="header-content">
+      <h1 class="app-name">BookShelf</h1>
+      <p class="tagline">Your personal digital library companion</p>
+      <a href="bookshelf.html" class="cta-button">Enter Library</a>
     </div>
-
-    <div class="tabs-container">
-      <div class="tabs" role="tablist" aria-label="Book list tabs">
-        <button class="tab active" role="tab" aria-selected="true" aria-controls="all-books-panel" id="tab-all">All Books</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="favorites-panel" id="tab-favorites">Favorites</button>
+  </header>
+  
+  <section class="features">
+    <h2 class="section-title">Key Features</h2>
+    
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📚</div>
+        <h3 class="feature-title">Track Your Reading</h3>
+        <p class="feature-description">Keep track of books you've read, are currently reading, or want to read in the future.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">⭐</div>
+        <h3 class="feature-title">Rate & Review</h3>
+        <p class="feature-description">Rate your books and keep notes about what you loved or what you learned.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">❤️</div>
+        <h3 class="feature-title">Create Favorites</h3>
+        <p class="feature-description">Mark your favorite books and create custom collections for easy access.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3 class="feature-title">Smart Filters</h3>
+        <p class="feature-description">Filter by genre, author, reading status and find exactly what you're looking for.</p>
       </div>
     </div>
-
-    <section id="all-books-panel" role="tabpanel" aria-labelledby="tab-all">
-      <div class="filters" aria-label="Book list filters">
-        <div class="filter-section">
-          <h3>Filter by Genre</h3>
-          <div id="genre-filters" aria-label="Filter by genre" role="group" tabindex="0"></div>
-        </div>
-        
-        <div class="filter-section">
-          <h3>Reading Status</h3>
-          <select id="status-filter" aria-label="Filter by reading status">
-            <option value="all">All Statuses</option>
-            <option value="want-to-read">Want to Read</option>
-            <option value="currently-reading">Currently Reading</option>
-            <option value="finished">Finished</option>
-          </select>
-        </div>
-        
-        <div class="filter-section">
-          <h3>Sort By</h3>
-          <select id="sort-filter" aria-label="Sort books">
-            <option value="title-asc">Title</option>
-            <option value="title-desc">Title Z–A</option>
-            <option value="author-asc">Author A–Z</option>
-            <option value="author-desc">Author Z–A</option>
-            <option value="rating-desc">Highest Rating</option>
-            <option value="added-desc">Recently Added</option>
-          </select>
+  </section>
+  
+  <section class="how-it-works">
+    <h2 class="section-title">How It Works</h2>
+    
+    <div class="steps-container">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3 class="step-title">Add Books to Your Shelf</h3>
+          <p class="step-description">Build your digital collection by adding books you own, have read, or want to read.</p>
         </div>
       </div>
-      <div id="book-list" aria-live="polite" aria-relevant="additions removals" tabindex="0"></div>
-    </section>
-
-    <section id="favorites-panel" role="tabpanel" aria-labelledby="tab-favorites" hidden>
-      <p style="text-align:center; color:#666; margin-bottom:12px;">Your favorite books will appear here.</p>
-      <div id="favorites-list" aria-live="polite" aria-relevant="additions removals" tabindex="0"></div>
-    </section>
-  </div>
-
-  <div id="book-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-summary" tabindex="-1">
-    <div class="modal-content">
-      <button class="modal-close" aria-label="Close modal" title="Close Modal">&times;</button>
-      <h2 id="modal-title" class="modal-title"></h2>
-      <p id="modal-summary" class="modal-summary"></p>
-      <p class="modal-details"><strong>Publication Year:</strong> <span id="modal-year"></span></p>
-      <p class="modal-details"><strong>Page Count:</strong> <span id="modal-pages"></span></p>
-      <a href="#" target="_blank" rel="noopener noreferrer" id="modal-link" class="modal-link">Learn More</a>
+      
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3 class="step-title">Organize Your Collection</h3>
+          <p class="step-description">Sort, filter, and organize your books by genre, author, or reading status.</p>
+        </div>
+      </div>
+      
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3 class="step-title">Track Your Progress</h3>
+          <p class="step-description">Update your reading status and see your progress over time.</p>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
+  
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">BookShelf</div>
+      <p>Your digital reading companion for life</p>
+      
+      <div class="footer-links">
+        <a href="#" class="footer-link">Home</a>
+        <a href="bookshelf.html" class="footer-link">Library</a>
+        <a href="#" class="footer-link">About</a>
+        <a href="#" class="footer-link">Contact</a>
+      </div>
+      
+      <p class="copyright">&copy; 2025 BookShelf. All rights reserved.</p>
+    </div>
+  </footer>
 
-<script src="script.js"></script>
+  <script>
+    // Animation for feature cards
+    document.addEventListener('DOMContentLoaded', () => {
+      // Animate feature cards on scroll
+      const featureCards = document.querySelectorAll('.feature-card');
+      const steps = document.querySelectorAll('.step');
+      
+      // Helper function to check if element is in viewport
+      const isInViewport = (element) => {
+        const rect = element.getBoundingClientRect();
+        return (
+          rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
+          rect.bottom >= 0
+        );
+      };
+      
+      // Initial check
+      const checkVisibility = () => {
+        featureCards.forEach(card => {
+          if (isInViewport(card)) {
+            card.classList.add('animate');
+          }
+        });
+        
+        steps.forEach(step => {
+          if (isInViewport(step)) {
+            step.classList.add('animate');
+          }
+        });
+      };
+      
+      // Check on scroll
+      window.addEventListener('scroll', checkVisibility);
+      
+      // Check on initial load
+      checkVisibility();
+      
+      // Dark mode functionality
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      
+      function setTheme(theme) {
+        if(theme === 'dark') {
+          document.body.classList.add('dark');
+          themeToggleBtn.textContent = '☀️';
+          themeToggleBtn.setAttribute('aria-pressed', 'true');
+        } else {
+          document.body.classList.remove('dark');
+          themeToggleBtn.textContent = '🌗';
+          themeToggleBtn.setAttribute('aria-pressed', 'false');
+        }
+        localStorage.setItem('theme', theme);
+      }
+      
+      // Initialize theme from storage or default
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      setTheme(savedTheme);
+      
+      // Theme toggle capability
+      themeToggleBtn.addEventListener('click', () => {
+        const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
+        setTheme(newTheme);
+      });
+    });
+  </script>
 </body>
 </html>
 
