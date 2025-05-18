@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BookShelf - Your Digital Reading Companion</title>
-  <style>
+<style>
     /* Reset & Base Styles */
-    *, *::before, *::after {
-      box-sizing: border-box;
+  *, *::before, *::after {
+    box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
@@ -38,17 +38,17 @@
       --card-shadow: 0 8px 30px rgba(88, 47, 14, 0.12);
     }
     
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: var(--bg-light);
       color: var(--text-dark);
       line-height: 1.6;
       overflow-x: hidden;
-      transition: background-color 0.4s, color 0.4s;
-    }
+    transition: background-color 0.4s, color 0.4s;
+  }
 
     /* Dark mode styles */
-    body.dark {
+  body.dark {
       background-color: #121212;
       color: var(--khaki);
     }
@@ -190,9 +190,9 @@
       position: relative;
       overflow: hidden;
       min-height: 60vh;
-      display: flex;
+    display: flex;
       align-items: center;
-      justify-content: center;
+    justify-content: center;
     }
     
     .header-content {
@@ -207,7 +207,7 @@
     #theme-toggle {
       background: transparent;
       border: none;
-      color: white;
+    color: white;
       font-size: 1.5rem;
       cursor: pointer;
       width: 40px;
@@ -325,7 +325,7 @@
       text-align: center;
       font-size: 2.5rem;
       margin-bottom: 3rem;
-      position: relative;
+    position: relative;
       color: var(--seal-brown);
     }
     
@@ -357,8 +357,8 @@
       transform: translateY(30px);
       position: relative;
       height: 100%;
-      display: flex;
-      flex-direction: column;
+    display: flex;
+    flex-direction: column;
     }
     
     .feature-card.animate {
@@ -409,7 +409,7 @@
     }
     
     .step {
-      display: flex;
+    display: flex;
       align-items: center;
       gap: 2.5rem;
       opacity: 0;
@@ -466,7 +466,7 @@
     
     .footer-logo {
       font-size: 2rem;
-      font-weight: 700;
+    font-weight: 700;
       margin-bottom: 1rem;
     }
     
@@ -479,7 +479,7 @@
     
     .footer-link {
       color: var(--white);
-      text-decoration: none;
+    text-decoration: none;
       opacity: 0.8;
       transition: opacity 0.3s;
     }
@@ -677,7 +677,7 @@
           document.body.classList.add('dark');
           themeToggleBtn.textContent = '☀️';
           themeToggleBtn.setAttribute('aria-pressed', 'true');
-        } else {
+    } else {
           document.body.classList.remove('dark');
           themeToggleBtn.textContent = '🌗';
           themeToggleBtn.setAttribute('aria-pressed', 'false');
@@ -690,12 +690,12 @@
       setTheme(savedTheme);
       
       // Theme toggle capability
-      themeToggleBtn.addEventListener('click', () => {
-        const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
-        setTheme(newTheme);
-      });
+  themeToggleBtn.addEventListener('click', () => {
+    const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
+    setTheme(newTheme);
+  });
     });
-  </script>
+</script>
 </body>
 </html>
 

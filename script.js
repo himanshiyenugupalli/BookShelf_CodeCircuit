@@ -681,6 +681,84 @@ tabs.forEach(tab => {
   });
 });
 
+// Add Book Modal Functions
+function openAddBookModal() {
+  const modal = document.getElementById('add-book-modal');
+  modal.classList.add('show');
+  document.getElementById('book-title').focus();
+}
+
+function closeAddBookModal() {
+  const modal = document.getElementById('add-book-modal');
+  modal.classList.remove('show');
+  document.getElementById('add-book-form').reset();
+}
+
+function generateBookId() {
+  return 'b' + (Math.max(...books.map(b => parseInt(b.id.slice(1)))) + 1);
+}
+
+function handleAddBook(event) {
+  event.preventDefault();
+  
+  const formData = {
+    title: document.getElementById('book-title').value.trim(),
+    author: document.getElementById('book-author').value.trim(),
+    genre: document.getElementById('book-genre').value,
+    publicationYear: parseInt(document.getElementById('book-year').value) || null,
+    pageCount: parseInt(document.getElementById('book-pages').value) || null,
+    cover: document.getElementById('book-cover').value.trim() || 'https://via.placeholder.com/150x200?text=No+Cover',
+    summary: document.getElementById('book-description').value.trim(),
+    id: generateBookId(),
+    addedAt: Date.now(),
+    infoLink: '#'
+  };
+
+  // Add the new book to the books array
+  books.unshift(formData);
+  
+  // Set initial reading status
+  readingStatus[formData.id] = document.getElementById('book-status').value;
+  
+  // Save to storage
+  saveToStorage();
+  
+  // Close modal and refresh the display
+  closeAddBookModal();
+  renderLists();
+  
+  // Show success message
+  alert('Book added successfully!');
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+  // ... existing event listeners ...
+  
+  // Add Book Button
+  document.getElementById('add-book-btn').addEventListener('click', openAddBookModal);
+  
+  // Add Book Form
+  document.getElementById('add-book-form').addEventListener('submit', handleAddBook);
+  
+  // Cancel Add Book
+  document.getElementById('cancel-add-book').addEventListener('click', closeAddBookModal);
+  
+  // Close Add Book Modal when clicking outside
+  document.getElementById('add-book-modal').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      closeAddBookModal();
+    }
+  });
+  
+  // Close Add Book Modal when pressing Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.getElementById('add-book-modal').classList.contains('show')) {
+      closeAddBookModal();
+    }
+  });
+});
+
 // Initial render calls
 renderGenreFilters();
 renderLists(); 
