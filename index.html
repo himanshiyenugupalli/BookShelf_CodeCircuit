@@ -257,6 +257,111 @@
       animation: float 10s ease-in-out infinite 2s;
     }
     
+    /* Floating Author and Book Images */
+    .floating-image {
+      position: absolute;
+      border-radius: 8px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      z-index: 1;
+      opacity: 0.65;
+      pointer-events: none;
+    }
+
+    .floating-image.author {
+      border-radius: 50%;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .author-1 {
+      width: 110px;
+      height: 110px;
+      top: 15%;
+      left: 12%;
+      animation: floatAuthor 10s ease-in-out infinite;
+    }
+
+    .author-2 {
+      width: 90px;
+      height: 90px;
+      bottom: 18%;
+      right: 18%;
+      animation: floatAuthor 12s ease-in-out infinite 2s;
+    }
+
+    .author-3 {
+      width: 80px;
+      height: 80px;
+      top: 65%;
+      left: 20%;
+      animation: floatAuthor 9s ease-in-out infinite 1s;
+    }
+
+    .book-1 {
+      width: 80px;
+      height: 120px;
+      top: 20%;
+      right: 15%;
+      animation: floatBook 11s ease-in-out infinite 0.5s;
+      transform: rotate(10deg);
+    }
+
+    .book-2 {
+      width: 90px;
+      height: 135px;
+      bottom: 25%;
+      left: 10%;
+      animation: floatBook 13s ease-in-out infinite 1.5s;
+      transform: rotate(-8deg);
+    }
+
+    .book-3 {
+      width: 70px;
+      height: 105px;
+      top: 40%;
+      right: 25%;
+      animation: floatBook 12s ease-in-out infinite 3s;
+      transform: rotate(5deg);
+    }
+
+    @keyframes floatAuthor {
+      0% { 
+        transform: translateY(0) translateX(0) rotate(0deg);
+      }
+      25% {
+        transform: translateY(-15px) translateX(10px) rotate(2deg);
+      }
+      50% {
+        transform: translateY(0) translateX(15px) rotate(0deg);
+      }
+      75% {
+        transform: translateY(15px) translateX(5px) rotate(-2deg);
+      }
+      100% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+      }
+    }
+
+    @keyframes floatBook {
+      0% { 
+        transform: translateY(0) translateX(0) rotate(var(--rotation, 0deg));
+      }
+      20% {
+        transform: translateY(-20px) translateX(5px) rotate(calc(var(--rotation, 0deg) + 3deg));
+      }
+      40% {
+        transform: translateY(-10px) translateX(15px) rotate(calc(var(--rotation, 0deg) + 5deg));
+      }
+      60% {
+        transform: translateY(-25px) translateX(10px) rotate(calc(var(--rotation, 0deg) + 3deg));
+      }
+      80% {
+        transform: translateY(-10px) translateX(0px) rotate(calc(var(--rotation, 0deg) + 2deg));
+      }
+      100% {
+        transform: translateY(0) translateX(0) rotate(var(--rotation, 0deg));
+      }
+    }
+    
     @keyframes float {
       0%, 100% { transform: translateY(0) scale(1); }
       50% { transform: translateY(-20px) scale(1.05); }
@@ -519,6 +624,10 @@
       .book {
         opacity: 0.1;
       }
+
+      .floating-image {
+        opacity: 0.4;
+      }
     }
     
     @media (max-width: 480px) {
@@ -528,6 +637,16 @@
       
       .features-grid {
         grid-template-columns: 1fr;
+      }
+
+      .floating-image.author {
+        width: 70px;
+        height: 70px;
+      }
+
+      .floating-image.book-cover {
+        width: 60px;
+        height: 90px;
       }
     }
   </style>
@@ -548,6 +667,16 @@
     <div class="shape shape-1"></div>
     <div class="shape shape-2"></div>
     <div class="shape shape-3"></div>
+
+    <!-- Floating Author Images -->
+    <img src="Dostoevsky.jpg" alt="Fyodor Dostoevsky portrait" class="floating-image author author-1">
+    <img src="JaneAustin.webp" alt="Jane Austen portrait" class="floating-image author author-2">
+    <img src="Sylviaplath.webp" alt="Sylvia Plath portrait" class="floating-image author author-3">
+
+    <!-- Floating Book Covers -->
+    <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1474154022i/3.jpg" alt="Book cover" class="floating-image book-cover book-1">
+    <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1553383690i/2657.jpg" alt="Book cover" class="floating-image book-cover book-2">
+    <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1387151694i/17245.jpg" alt="Book cover" class="floating-image book-cover book-3">
     
     <div class="header-content">
       <h1 class="app-name">BookShelf</h1>

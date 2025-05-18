@@ -43,46 +43,145 @@ body {
 }
 
 /* Book-themed decorative elements */
+@keyframes float {
+  0% { 
+    transform: translateY(0) translateX(0) rotate(var(--rotation));
+  }
+  25% {
+    transform: translateY(-25px) translateX(15px) rotate(calc(var(--rotation) + 3deg));
+  }
+  50% {
+    transform: translateY(0) translateX(30px) rotate(calc(var(--rotation) + 6deg));
+  }
+  75% {
+    transform: translateY(25px) translateX(15px) rotate(calc(var(--rotation) + 3deg));
+  }
+  100% {
+    transform: translateY(0) translateX(0) rotate(var(--rotation));
+  }
+}
+
+@keyframes floatReverse {
+  0% { 
+    transform: translateY(0) translateX(0) rotate(var(--rotation));
+  }
+  25% {
+    transform: translateY(25px) translateX(-15px) rotate(calc(var(--rotation) - 3deg));
+  }
+  50% {
+    transform: translateY(0) translateX(-30px) rotate(calc(var(--rotation) - 6deg));
+  }
+  75% {
+    transform: translateY(-25px) translateX(-15px) rotate(calc(var(--rotation) - 3deg));
+  }
+  100% {
+    transform: translateY(0) translateX(0) rotate(var(--rotation));
+  }
+}
+
 .book-decoration {
   position: fixed;
   opacity: 0.08;
   z-index: -1;
   pointer-events: none;
+  animation: float 8s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  --rotation: 0deg;
+  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+  will-change: transform;
 }
 
 .book-icon-1 {
   font-size: 15rem;
   top: 10%;
   left: 2%;
-  transform: rotate(-10deg);
+  --rotation: -10deg;
+  --delay: 0s;
+  animation-duration: 9s;
 }
 
 .book-icon-2 {
   font-size: 12rem;
   bottom: 5%;
   right: 3%;
-  transform: rotate(8deg);
+  --rotation: 8deg;
+  --delay: 1s;
+  animation-name: floatReverse;
+  animation-duration: 10s;
 }
 
 .book-icon-3 {
   font-size: 14rem;
   top: 40%;
   right: 12%;
-  transform: rotate(-5deg);
+  --rotation: -5deg;
+  --delay: 1.5s;
+  animation-duration: 8s;
 }
 
 .book-icon-4 {
   font-size: 10rem;
   bottom: 30%;
   left: 15%;
-  transform: rotate(12deg);
+  --rotation: 12deg;
+  --delay: 0.5s;
+  animation-name: floatReverse;
+  animation-duration: 11s;
 }
 
 .book-icon-5 {
   font-size: 8rem;
   top: 25%;
   left: 40%;
-  transform: rotate(-8deg);
+  --rotation: -8deg;
+  --delay: 2s;
+  animation-duration: 9.5s;
+}
+
+@keyframes stackBob {
+  0% {
+    transform: translateY(0) rotate(var(--rotation)) translateX(0);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  }
+  25% {
+    transform: translateY(-35px) rotate(calc(var(--rotation) + 2deg)) translateX(20px);
+    box-shadow: 0 25px 35px rgba(0,0,0,0.18);
+  }
+  50% {
+    transform: translateY(-20px) rotate(calc(var(--rotation) + 4deg)) translateX(40px);
+    box-shadow: 0 20px 30px rgba(0,0,0,0.15);
+  }
+  75% {
+    transform: translateY(-40px) rotate(calc(var(--rotation) + 2deg)) translateX(20px);
+    box-shadow: 0 30px 40px rgba(0,0,0,0.2);
+  }
+  100% {
+    transform: translateY(0) rotate(var(--rotation)) translateX(0);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  }
+}
+
+@keyframes stackBobReverse {
+  0% {
+    transform: translateY(0) rotate(var(--rotation)) translateX(0);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  }
+  25% {
+    transform: translateY(-35px) rotate(calc(var(--rotation) - 2deg)) translateX(-20px);
+    box-shadow: 0 25px 35px rgba(0,0,0,0.18);
+  }
+  50% {
+    transform: translateY(-20px) rotate(calc(var(--rotation) - 4deg)) translateX(-40px);
+    box-shadow: 0 20px 30px rgba(0,0,0,0.15);
+  }
+  75% {
+    transform: translateY(-40px) rotate(calc(var(--rotation) - 2deg)) translateX(-20px);
+    box-shadow: 0 30px 40px rgba(0,0,0,0.2);
+  }
+  100% {
+    transform: translateY(0) rotate(var(--rotation)) translateX(0);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  }
 }
 
 .book-stack {
@@ -93,14 +192,21 @@ body {
   background: linear-gradient(135deg, var(--raw-umber) 0%, var(--seal-brown) 100%);
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
   z-index: -1;
-  opacity: 0.1;
+  opacity: 0.12;
   pointer-events: none;
+  animation: stackBob 12s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  --rotation: 0deg;
+  transform-origin: center center;
+  will-change: transform;
 }
 
 .book-stack::before, .book-stack::after {
   content: '';
   position: absolute;
   border-radius: 6px;
+  transition: transform 0.5s ease-in-out;
+  will-change: transform;
 }
 
 .book-stack::before {
@@ -109,6 +215,7 @@ body {
   width: 145px;
   height: 30px;
   background: linear-gradient(135deg, var(--lion) 0%, var(--khaki) 100%);
+  transform-origin: center center;
 }
 
 .book-stack::after {
@@ -117,25 +224,63 @@ body {
   width: 130px;
   height: 25px;
   background: linear-gradient(135deg, var(--sage) 0%, var(--sage-alt) 100%);
+  transform-origin: center center;
 }
 
 .stack-1 {
   top: 30%;
   right: 8%;
+  --rotation: 0deg;
+  --delay: 0.5s;
+  animation-duration: 11s;
 }
 
 .stack-2 {
   bottom: 15%;
   left: 5%;
-  transform: rotate(-5deg);
+  --rotation: -5deg;
+  --delay: 1.5s;
+  animation-name: stackBobReverse;
+  animation-duration: 13s;
 }
 
 .stack-3 {
   top: 70%;
   right: 20%;
-  transform: rotate(8deg);
+  --rotation: 8deg;
+  --delay: 1s;
   width: 140px;
   height: 180px;
+  animation-duration: 12s;
+}
+
+/* Enhanced hover effects for the stacks */
+.book-stack:hover {
+  animation-play-state: paused;
+}
+
+.book-stack:hover::before {
+  transform: translateY(-12px) translateX(-8px) rotate(-5deg);
+  transition: transform 0.3s ease-out;
+}
+
+.book-stack:hover::after {
+  transform: translateY(-18px) translateX(8px) rotate(5deg);
+  transition: transform 0.3s ease-out;
+}
+
+/* Reduce motion if user prefers */
+@media (prefers-reduced-motion: reduce) {
+  .book-decoration,
+  .book-stack {
+    animation: none;
+    transform: none;
+  }
+  
+  .book-stack:hover::before,
+  .book-stack:hover::after {
+    transform: none;
+  }
 }
 
 body.dark {
