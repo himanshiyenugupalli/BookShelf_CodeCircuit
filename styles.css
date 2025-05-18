@@ -907,4 +907,101 @@ body.dark .form-group textarea:focus {
     margin: 20px;
     padding: 20px;
   }
+}
+
+/* Book Actions */
+.book-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+body.dark .book-actions {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.book-action-btn {
+  background-color: transparent;
+  border: none;
+  color: var(--raw-umber);
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background-color 0.2s;
+}
+
+.book-action-btn:hover {
+  background-color: rgba(147, 102, 57, 0.1);
+}
+
+.book-action-btn.edit-btn::before {
+  content: "✏️";
+  font-size: 0.9rem;
+}
+
+.book-action-btn.remove-btn::before {
+  content: "🗑️";
+  font-size: 0.9rem;
+}
+
+body.dark .book-action-btn {
+  color: var(--lion);
+}
+
+body.dark .book-action-btn:hover {
+  background-color: rgba(166, 138, 100, 0.1);
+}
+
+/* Edit book modal */
+#edit-book-modal .modal-content {
+  max-width: 500px;
+  width: 85%;
+  margin: 40px;
+  animation: modalAppear 0.3s ease-out forwards;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+#edit-book-modal .form-group {
+  margin-bottom: 12px;
+}
+
+#edit-book-modal .modal-title {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+#edit-book-modal label {
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+#edit-book-modal input,
+#edit-book-modal select {
+  padding: 6px 8px;
+  font-size: 0.9rem;
+}
+
+#edit-book-modal textarea {
+  padding: 6px 8px;
+  height: 60px;
+  min-height: 60px;
+  font-size: 0.9rem;
+}
+
+#edit-book-modal .form-actions {
+  margin-top: 16px;
+  gap: 8px;
+}
+
+#edit-book-modal .form-actions button {
+  padding: 6px 12px;
+  font-size: 0.85rem;
 } 

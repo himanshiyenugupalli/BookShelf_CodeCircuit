@@ -254,6 +254,7 @@ let currentSearchTerm = '';
 let currentSort = 'title-asc';
 let activeTab = 'all'; // 'all' or 'favorites'
 const genres = [...new Set(booksData.map(b => b.genre))].sort();
+let currentBookToDelete = null;
 
 // Dom Elements
 const themeToggleBtn = document.getElementById('theme-toggle');
@@ -498,7 +499,103 @@ function filterAndSortBooks(books, filterFavorites=false) {
   return filtered;
 }
 
-// Create book card element
+// Edit Book Modal Functions
+function openEditBookModal(book) {
+  const modal = document.getElementById('edit-book-modal');
+  
+  // Populate form fields with book data
+  document.getElementById('edit-book-id').value = book.id;
+  document.getElementById('edit-book-title-input').value = book.title;
+  document.getElementById('edit-book-author').value = book.author;
+  document.getElementById('edit-book-genre').value = book.genre;
+  document.getElementById('edit-book-year').value = book.publicationYear || '';
+  document.getElementById('edit-book-pages').value = book.pageCount || '';
+  document.getElementById('edit-book-cover').value = book.cover || '';
+  document.getElementById('edit-book-description').value = book.summary || '';
+  document.getElementById('edit-book-status').value = readingStatus[book.id] || 'want-to-read';
+  
+  modal.classList.add('show');
+  document.getElementById('edit-book-title-input').focus();
+}
+
+function closeEditBookModal() {
+  const modal = document.getElementById('edit-book-modal');
+  modal.classList.remove('show');
+}
+
+function handleEditBook(event) {
+  event.preventDefault();
+  
+  const bookId = document.getElementById('edit-book-id').value;
+  const bookIndex = books.findIndex(b => b.id === bookId);
+  
+  if (bookIndex === -1) {
+    alert('Error: Book not found');
+    return;
+  }
+  
+  // Get updated values from form
+  const updatedBook = {
+    ...books[bookIndex],
+    title: document.getElementById('edit-book-title-input').value.trim(),
+    author: document.getElementById('edit-book-author').value.trim(),
+    genre: document.getElementById('edit-book-genre').value,
+    publicationYear: parseInt(document.getElementById('edit-book-year').value) || null,
+    pageCount: parseInt(document.getElementById('edit-book-pages').value) || null,
+    cover: document.getElementById('edit-book-cover').value.trim() || 'https://via.placeholder.com/150x200?text=No+Cover',
+    summary: document.getElementById('edit-book-description').value.trim()
+  };
+  
+  // Update the book in the array
+  books[bookIndex] = updatedBook;
+  
+  // Update reading status
+  readingStatus[bookId] = document.getElementById('edit-book-status').value;
+  
+  // Save to storage
+  saveToStorage();
+  
+  // Close modal and refresh the display
+  closeEditBookModal();
+  renderLists();
+  
+  // Show success message
+  alert('Book updated successfully!');
+}
+
+// Remove Book Functions
+function openDeleteConfirmation(bookId) {
+  currentBookToDelete = bookId;
+  const confirmDialog = document.getElementById('confirm-dialog');
+  confirmDialog.classList.add('show');
+}
+
+function closeDeleteConfirmation() {
+  const confirmDialog = document.getElementById('confirm-dialog');
+  confirmDialog.classList.remove('show');
+  currentBookToDelete = null;
+}
+
+function handleDeleteBook() {
+  if (!currentBookToDelete) return;
+  
+  // Remove the book from the array
+  books = books.filter(book => book.id !== currentBookToDelete);
+  
+  // Remove associated data
+  delete favorites[currentBookToDelete];
+  delete ratings[currentBookToDelete];
+  delete readingStatus[currentBookToDelete];
+  
+  // Save to storage
+  saveToStorage();
+  
+  // Close confirmation dialog and refresh the display
+  closeDeleteConfirmation();
+  renderLists();
+}
+
+// Create book card element - Update to include edit and remove buttons
 function createBookCard(book) {
   const card = document.createElement('article');
   card.className = 'book-card';
@@ -547,6 +644,37 @@ function createBookCard(book) {
   // Reading status dropdown
   const readingSelect = createReadingStatusDropdown(book.id);
   info.appendChild(readingSelect);
+  
+  // Book actions container
+  const actions = document.createElement('div');
+  actions.className = 'book-actions';
+  
+  // Edit button
+  const editBtn = document.createElement('button');
+  editBtn.className = 'book-action-btn edit-btn';
+  editBtn.textContent = 'Edit';
+  editBtn.setAttribute('aria-label', `Edit ${book.title}`);
+  editBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openEditBookModal(book);
+  });
+  
+  // Remove button
+  const removeBtn = document.createElement('button');
+  removeBtn.className = 'book-action-btn remove-btn';
+  removeBtn.textContent = 'Remove';
+  removeBtn.setAttribute('aria-label', `Remove ${book.title}`);
+  removeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openDeleteConfirmation(book.id);
+  });
+  
+  // Add buttons to actions container
+  actions.appendChild(editBtn);
+  actions.appendChild(removeBtn);
+  
+  // Add actions to info container
+  info.appendChild(actions);
 
   card.appendChild(info);
 
@@ -757,6 +885,52 @@ document.addEventListener('DOMContentLoaded', () => {
       closeAddBookModal();
     }
   });
+  
+  // Edit Book Form
+  document.getElementById('edit-book-form').addEventListener('submit', handleEditBook);
+  
+  // Cancel Edit Book
+  document.getElementById('cancel-edit-book').addEventListener('click', closeEditBookModal);
+  
+  // Close Edit Book Modal when clicking outside
+  document.getElementById('edit-book-modal').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      closeEditBookModal();
+    }
+  });
+  
+  // Close Edit Book Modal when pressing Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.getElementById('edit-book-modal').classList.contains('show')) {
+      closeEditBookModal();
+    }
+  });
+  
+  // Close Edit Book Modal when clicking the X button
+  document.querySelector('#edit-book-modal .modal-close').addEventListener('click', closeEditBookModal);
+  
+  // Delete Book Confirmation
+  document.getElementById('confirm-delete').addEventListener('click', handleDeleteBook);
+  
+  // Cancel Delete
+  document.getElementById('cancel-delete').addEventListener('click', closeDeleteConfirmation);
+  
+  // Close Confirm Dialog when clicking outside
+  document.getElementById('confirm-dialog').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      closeDeleteConfirmation();
+    }
+  });
+  
+  // Close Confirm Dialog when pressing Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.getElementById('confirm-dialog').classList.contains('show')) {
+      closeDeleteConfirmation();
+    }
+  });
+  
+  // Close Confirm Dialog when clicking the X button
+  document.querySelector('#confirm-dialog .modal-close')?.addEventListener('click', closeDeleteConfirmation);
 });
 
 // Initial render calls
