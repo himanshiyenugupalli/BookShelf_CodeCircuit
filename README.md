@@ -21,11 +21,12 @@ A responsive web application to organize, track, and manage your personal book c
 
 ## 🖥️ UI Screenshots
 
-### 📚 BookShelf Library  
-![BookShelf](./Bookshelf.png)
-
 ### 🏠 Landing Page  
 ![Landing Page](./landingpage.png)
+
+
+### 📚 BookShelf Library  
+![BookShelf](./Bookshelf.png)
 
 ---
 
