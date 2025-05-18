@@ -1004,4 +1004,42 @@ body.dark .book-action-btn:hover {
 #edit-book-modal .form-actions button {
   padding: 6px 12px;
   font-size: 0.85rem;
+}
+
+/* Common button styles for Add Book and Clear Data */
+#add-book-btn,
+#clear-data-btn {
+  background-color: rgba(139, 69, 19, 0.8); /* Seal brown with opacity */
+  color: #fff;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 30px; /* Higher value for elliptical shape */
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  text-align: center;
+}
+
+#add-book-btn:hover,
+#clear-data-btn:hover {
+  background-color: rgba(139, 69, 19, 1);
+  transform: scale(1.05);
+}
+
+/* Header positioning for Clear Data button on landing page */
+header #clear-data-btn {
+  position: absolute;
+  top: 20px;
+  right: 70px;
+  z-index: 10;
+}
+
+/* Ensure consistent spacing in header actions */
+.header-actions #add-book-btn,
+.header-actions #clear-data-btn {
+  margin-right: 10px;
 } 

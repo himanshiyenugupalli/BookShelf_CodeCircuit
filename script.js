@@ -248,6 +248,13 @@ let books = [...booksData]; // working copy for sorting/filtering
 let favorites = JSON.parse(localStorage.getItem('favorites')) || {};
 let ratings = JSON.parse(localStorage.getItem('ratings')) || {};
 let readingStatus = JSON.parse(localStorage.getItem('readingStatus')) || {};
+
+// Load books from localStorage if available, otherwise use default books
+let storedBooks = JSON.parse(localStorage.getItem('books'));
+if (storedBooks && storedBooks.length > 0) {
+  books = storedBooks;
+}
+
 let currentGenreFilter = 'all';
 let currentStatusFilter = 'all';
 let currentSearchTerm = '';
@@ -280,6 +287,7 @@ function saveToStorage() {
   localStorage.setItem('favorites', JSON.stringify(favorites));
   localStorage.setItem('ratings', JSON.stringify(ratings));
   localStorage.setItem('readingStatus', JSON.stringify(readingStatus));
+  localStorage.setItem('books', JSON.stringify(books));
 }
 
 function setTheme(theme) {
@@ -859,9 +867,43 @@ function handleAddBook(event) {
   alert('Book added successfully!');
 }
 
+// Function to clear all data from localStorage
+function clearAllData() {
+  if (confirm("Are you sure you want to clear all your book data? This action cannot be undone.")) {
+    // Reset books to default data
+    books = [...booksData];
+    
+    // Clear user data
+    favorites = {};
+    ratings = {};
+    readingStatus = {};
+    
+    // Clear localStorage
+    localStorage.removeItem('books');
+    localStorage.removeItem('favorites');
+    localStorage.removeItem('ratings');
+    localStorage.removeItem('readingStatus');
+    
+    // Save initial books to storage
+    localStorage.setItem('books', JSON.stringify(booksData));
+    
+    // Refresh the display
+    renderLists();
+    
+    // Show confirmation
+    alert("All data has been cleared and reset to default books.");
+  }
+}
+
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
   // ... existing event listeners ...
+  
+  // Clear Data Button
+  const clearDataBtn = document.getElementById('clear-data-btn');
+  if (clearDataBtn) {
+    clearDataBtn.addEventListener('click', clearAllData);
+  }
   
   // Add Book Button
   document.getElementById('add-book-btn').addEventListener('click', openAddBookModal);
@@ -871,6 +913,9 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Cancel Add Book
   document.getElementById('cancel-add-book').addEventListener('click', closeAddBookModal);
+  
+  // Close Add Book Modal when clicking the X button
+  document.querySelector('#add-book-modal .modal-close').addEventListener('click', closeAddBookModal);
   
   // Close Add Book Modal when clicking outside
   document.getElementById('add-book-modal').addEventListener('click', (e) => {
