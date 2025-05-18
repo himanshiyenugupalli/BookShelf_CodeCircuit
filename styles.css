@@ -168,6 +168,13 @@ body.dark h1 {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 30px;
+  gap: 20px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 /* Search bar */
@@ -561,14 +568,12 @@ body.dark .modal-link:hover {
     gap: 15px;
   }
   
-  #search {
-    max-width: none;
+  .header-actions {
+    justify-content: flex-end;
   }
   
-  #theme-toggle {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+  #search {
+    max-width: none;
   }
   
   h1 {
