@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BookShelf</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container" role="main">
+    <h1>BookShelf</h1>
+
+    <div class="header-bar" aria-label="Main controls">
+      <input type="search" id="search" placeholder="Search by title or author..." aria-label="Search books" />
+      <button id="theme-toggle" aria-pressed="false" title="Toggle dark/light theme">🌗</button>
+    </div>
+
+    <div class="tabs-container">
+      <div class="tabs" role="tablist" aria-label="Book list tabs">
+        <button class="tab active" role="tab" aria-selected="true" aria-controls="all-books-panel" id="tab-all">All Books</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="favorites-panel" id="tab-favorites">Favorites</button>
+      </div>
+    </div>
+
+    <section id="all-books-panel" role="tabpanel" aria-labelledby="tab-all">
+      <div class="filters" aria-label="Book list filters">
+        <div class="filter-section">
+          <h3>Filter by Genre</h3>
+          <div id="genre-filters" aria-label="Filter by genre" role="group" tabindex="0"></div>
+        </div>
+        
+        <div class="filter-section">
+          <h3>Reading Status</h3>
+          <select id="status-filter" aria-label="Filter by reading status">
+            <option value="all">All Statuses</option>
+            <option value="want-to-read">Want to Read</option>
+            <option value="currently-reading">Currently Reading</option>
+            <option value="finished">Finished</option>
+          </select>
+        </div>
+        
+        <div class="filter-section">
+          <h3>Sort By</h3>
+          <select id="sort-filter" aria-label="Sort books">
+            <option value="title-asc">Title</option>
+            <option value="title-desc">Title Z–A</option>
+            <option value="author-asc">Author A–Z</option>
+            <option value="author-desc">Author Z–A</option>
+            <option value="rating-desc">Highest Rating</option>
+            <option value="added-desc">Recently Added</option>
+          </select>
+        </div>
+      </div>
+      <div id="book-list" aria-live="polite" aria-relevant="additions removals" tabindex="0"></div>
+    </section>
+
+    <section id="favorites-panel" role="tabpanel" aria-labelledby="tab-favorites" hidden>
+      <p style="text-align:center; color:#666; margin-bottom:12px;">Your favorite books will appear here.</p>
+      <div id="favorites-list" aria-live="polite" aria-relevant="additions removals" tabindex="0"></div>
+    </section>
+  </div>
+
+  <div id="book-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-summary" tabindex="-1">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close modal" title="Close Modal">&times;</button>
+      <h2 id="modal-title" class="modal-title"></h2>
+      <p id="modal-summary" class="modal-summary"></p>
+      <p class="modal-details"><strong>Publication Year:</strong> <span id="modal-year"></span></p>
+      <p class="modal-details"><strong>Page Count:</strong> <span id="modal-pages"></span></p>
+      <a href="#" target="_blank" rel="noopener noreferrer" id="modal-link" class="modal-link">Learn More</a>
+    </div>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
+
